@@ -99,12 +99,16 @@
         font-family: "PT Serif", Georgia, serif;
         font-size: 15px;
       }
-      .rsvp-choice label,
-      .rsvp-plus {
+      .rsvp-choice label {
         cursor: pointer;
         display: inline-flex;
         gap: 7px;
         align-items: center;
+      }
+      .rsvp-choice input[type="radio"] {
+        accent-color: #b79b5b;
+        width: 16px;
+        height: 16px;
       }
       .rsvp-plus {
         color: #efe8d7;
@@ -220,6 +224,11 @@
         #page [data-pencil-name="Equation"] {
           left: calc(50% - 193px) !important;
         }
+        /* dark carpet overlay must span the full band, not be capped to 720 */
+        #page [data-pencil-name="Equation BG"] {
+          max-width: none !important;
+          margin: 0 !important;
+        }
 
         /* RSVP — full-width green band */
         #page > div[data-pencil-name="RSVP Wrap"] {
@@ -255,7 +264,7 @@
         }
         .accent-1 {
           left: -42px;
-          top: 880px;
+          top: 1330px;
           transform: rotate(-5deg);
         }
         .accent-2 {
@@ -993,19 +1002,19 @@
           </div>
           <div
             data-pencil-name="Film Photos"
-            class="box-border w-full h-fit shrink-0 flex flex-row gap-[6px] justify-start items-start"
+            class="box-border w-full h-[150px] shrink-0 flex flex-row gap-[6px] justify-start items-stretch overflow-hidden"
           >
             <div
               data-pencil-name="FP1"
-              class="box-border [flex:1_1_0] h-[150px] bg-[url('feast-evening.png')] bg-no-repeat bg-cover bg-center rounded-[2px]"
+              class="box-border [flex:1_1_0] min-w-0 h-full bg-[url('feast-evening.png')] bg-no-repeat bg-cover bg-center rounded-[2px]"
             ></div>
             <div
               data-pencil-name="FP2"
-              class="box-border [flex:1_1_0] h-[150px] bg-[url('carpet-tables.png')] bg-no-repeat bg-cover bg-center rounded-[2px]"
+              class="box-border [flex:1_1_0] min-w-0 h-full bg-[url('carpet-tables.png')] bg-no-repeat bg-cover bg-center rounded-[2px]"
             ></div>
             <div
               data-pencil-name="FP3"
-              class="box-border [flex:1_1_0] h-[150px] bg-[url('images/daisies.png')] bg-no-repeat bg-cover bg-center rounded-[2px]"
+              class="box-border [flex:1_1_0] min-w-0 h-full bg-[url('images/daisies.png')] bg-no-repeat bg-cover bg-center rounded-[2px]"
             ></div>
           </div>
           <div
@@ -1323,13 +1332,11 @@
               <label><input type="radio" name="attend" value="Буду" checked /> Буду 🎉</label>
               <label><input type="radio" name="attend" value="Не смогу" /> Не смогу 😢</label>
             </div>
-            <label class="rsvp-plus"><input type="checkbox" name="plus" /> Приду с парой / +1</label>
             <textarea name="msg" rows="2" placeholder="Пожелания, вопросы, идея для конкурса :)"></textarea>
             <button type="submit" class="rsvp-submit">Подтвердить присутствие</button>
           </form>
           <div id="rsvp-thanks" class="rsvp-thanks" style="display: none"></div>
           <div class="rsvp-cal-row">
-            <button id="cal-btn" class="cal-btn" type="button">🗓 Скачать .ics</button>
             <a id="gcal-btn" class="cal-btn cal-btn-ghost" target="_blank" rel="noopener">📅 Google Calendar</a>
           </div>
         </div>
@@ -1504,14 +1511,12 @@
           var name = (f.name.value || "").trim();
           if (!name) { f.name.focus(); return; }
           var attend = f.attend.value;
-          var plus = f.plus.checked ? "да" : "нет";
           var msg = (f.msg.value || "").trim();
 
           var text =
             "Подтверждение на свадьбу 14.08.2026%0A" +
             "Гость: " + name + "%0A" +
-            "Статус: " + attend + "%0A" +
-            "С парой/+1: " + plus +
+            "Статус: " + attend +
             (msg ? "%0AСообщение: " + msg : "");
 
           var link;
