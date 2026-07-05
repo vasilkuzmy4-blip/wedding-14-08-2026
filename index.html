@@ -1,1639 +1,1226 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script>
-      tailwind = { config: { corePlugins: { preflight: false } } };
-    </script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Marck+Script%3Awght%40400&family=Playfair+Display%3Awght%40400..900&family=PT+Serif%3Aital%2Cwght%400%2C400%3B1%2C400&display=swap"
-      rel="stylesheet"
-    />
-    <title>Вася &amp; Ксюша · Свадьба 14.08.2026</title>
-    <link rel="icon" type="image/jpeg" href="images/Icon.jpg" />
-    <link rel="apple-touch-icon" href="images/Icon.jpg" />
-    <style>
-      *, ::before, ::after {
-        box-sizing: border-box;
-      }
 
-      html, body {
-        margin: 0;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    tailwind = { config: { corePlugins: { preflight: false } } };
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Marck+Script%3Awght%40400&family=Playfair+Display%3Awght%40400..900&family=PT+Serif%3Aital%2Cwght%400%2C400%3B1%2C400&display=swap"
+    rel="stylesheet" />
+  <title>Вася &amp; Ксюша · Свадьба 14.08.2026</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="images/favicon-180.png" />
+  <style>
+    *,
+    ::before,
+    ::after {
+      box-sizing: border-box;
+    }
 
+    html,
+    body {
+      margin: 0;
+    }
+
+    body {
+      background: #d9cfb8;
+      display: flex;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    #page {
+      width: 390px;
+      max-width: 100%;
+    }
+
+    /* interactive bits */
+    #rsvp-link {
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    #rsvp-link:hover {
+      opacity: 0.65;
+    }
+
+    .cal-btn {
+      cursor: pointer;
+      font-family: "PT Serif", Georgia, serif;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      color: #2c3e33;
+      background: #efe8d7;
+      border: none;
+      border-radius: 30px;
+      padding: 12px 26px;
+      box-shadow: 0 3px 0 rgba(0, 0, 0, 0.25);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .cal-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .cal-btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    /* ===== RSVP form ===== */
+    .rsvp-form {
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .rsvp-form input[type="text"],
+    .rsvp-form textarea {
+      width: 100%;
+      box-sizing: border-box;
+      font-family: "PT Serif", Georgia, serif;
+      font-size: 15px;
+      color: #2c3e33;
+      background: #efe8d7;
+      border: 1px solid #b79b5b;
+      border-radius: 10px;
+      padding: 11px 14px;
+      resize: vertical;
+    }
+
+    .rsvp-form input::placeholder,
+    .rsvp-form textarea::placeholder {
+      color: #8a8470;
+    }
+
+    .rsvp-choice {
+      display: flex;
+      gap: 18px;
+      justify-content: center;
+      flex-wrap: wrap;
+      color: #efe8d7;
+      font-family: "PT Serif", Georgia, serif;
+      font-size: 15px;
+    }
+
+    .rsvp-choice label {
+      cursor: pointer;
+      display: inline-flex;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .rsvp-choice input[type="radio"] {
+      accent-color: #b79b5b;
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ===== RSVP extra questions (revealed on «Буду») ===== */
+    .rsvp-extra {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      padding: 14px 0;
+      border-top: 1px solid rgba(183, 155, 91, 0.4);
+      border-bottom: 1px solid rgba(183, 155, 91, 0.4);
+    }
+
+    .rsvp-extra[hidden] {
+      display: none;
+    }
+
+    .rsvp-q {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .rsvp-q-title {
+      color: #efe8d7;
+      font-family: "PT Serif", Georgia, serif;
+      font-size: 15px;
+      text-align: left;
+    }
+
+    .rsvp-q-title span {
+      color: #b7ac86;
+      font-size: 13px;
+      font-style: italic;
+    }
+
+    .rsvp-opts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      color: #efe8d7;
+      font-family: "PT Serif", Georgia, serif;
+      font-size: 15px;
+    }
+
+    .rsvp-opts label {
+      cursor: pointer;
+      display: inline-flex;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .rsvp-opts input {
+      accent-color: #b79b5b;
+      width: 16px;
+      height: 16px;
+    }
+
+    .rsvp-submit {
+      cursor: pointer;
+      font-family: "Playfair Display", serif;
+      font-size: 17px;
+      letter-spacing: 0.3px;
+      color: #2c3e33;
+      background: #efe8d7;
+      border: none;
+      border-radius: 30px;
+      padding: 13px 28px;
+      margin-top: 4px;
+      box-shadow: 0 3px 0 rgba(0, 0, 0, 0.25);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .rsvp-submit:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .rsvp-thanks {
+      color: #efe8d7;
+      font-family: "PT Serif", Georgia, serif;
+      font-size: 16px;
+      line-height: 1.5;
+      text-align: center;
+      max-width: 420px;
+    }
+
+    .rsvp-cal-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 8px;
+    }
+
+    .cal-btn-ghost {
+      background: transparent;
+      color: #efe8d7;
+      border: 1px solid #b79b5b;
+      box-shadow: none;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .cal-btn-ghost:hover {
+      background: rgba(239, 232, 215, 0.1);
+      transform: translateY(-1px);
+      box-shadow: none;
+    }
+
+    /* ===== Decorative collage accents (desktop only) ===== */
+    .accent {
+      display: none;
+    }
+
+    /* safety: never let the big hero names overflow on small phones */
+    @media (max-width: 430px) {
+      [data-pencil-name="Names"] {
+        font-size: 34px !important;
+      }
+    }
+
+    /* ===== Horizontal / desktop: two-column magazine layout ===== */
+    /* ===== Horizontal / desktop: single column, full-width bands ===== */
+    @media (min-width: 1000px) {
       body {
-        background: #d9cfb8;
-        display: flex;
-        justify-content: center;
-        overflow-x: hidden;
+        align-items: stretch;
+        padding: 0;
+        background: #ebe3d2;
       }
 
       #page {
-        width: 390px;
+        position: relative;
+        width: 100%;
         max-width: 100%;
-      }
-
-      /* interactive bits */
-      #rsvp-link {
-        cursor: pointer;
-        transition: opacity 0.2s;
-      }
-      #rsvp-link:hover {
-        opacity: 0.65;
-      }
-      .cal-btn {
-        cursor: pointer;
-        font-family: "PT Serif", Georgia, serif;
-        font-size: 14px;
-        letter-spacing: 0.5px;
-        color: #2c3e33;
-        background: #efe8d7;
-        border: none;
-        border-radius: 30px;
-        padding: 12px 26px;
-        box-shadow: 0 3px 0 rgba(0, 0, 0, 0.25);
-        transition: transform 0.15s, box-shadow 0.15s;
-      }
-      .cal-btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
-      }
-      .cal-btn:active {
-        transform: translateY(1px);
-        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
-      }
-
-      /* ===== RSVP form ===== */
-      .rsvp-form {
-        width: 100%;
-        max-width: 420px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 4px;
-      }
-      .rsvp-form input[type="text"],
-      .rsvp-form textarea {
-        width: 100%;
-        box-sizing: border-box;
-        font-family: "PT Serif", Georgia, serif;
-        font-size: 15px;
-        color: #2c3e33;
-        background: #efe8d7;
-        border: 1px solid #b79b5b;
-        border-radius: 10px;
-        padding: 11px 14px;
-        resize: vertical;
-      }
-      .rsvp-form input::placeholder,
-      .rsvp-form textarea::placeholder {
-        color: #8a8470;
-      }
-      .rsvp-choice {
-        display: flex;
-        gap: 18px;
-        justify-content: center;
-        flex-wrap: wrap;
-        color: #efe8d7;
-        font-family: "PT Serif", Georgia, serif;
-        font-size: 15px;
-      }
-      .rsvp-choice label {
-        cursor: pointer;
-        display: inline-flex;
-        gap: 7px;
-        align-items: center;
-      }
-      .rsvp-choice input[type="radio"] {
-        accent-color: #b79b5b;
-        width: 16px;
-        height: 16px;
-      }
-      /* ===== RSVP extra questions (revealed on «Буду») ===== */
-      .rsvp-extra {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-        width: 100%;
-        padding: 14px 0;
-        border-top: 1px solid rgba(183, 155, 91, 0.4);
-        border-bottom: 1px solid rgba(183, 155, 91, 0.4);
-      }
-      .rsvp-extra[hidden] {
-        display: none;
-      }
-      .rsvp-q {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-      .rsvp-q-title {
-        color: #efe8d7;
-        font-family: "PT Serif", Georgia, serif;
-        font-size: 15px;
-        text-align: left;
-      }
-      .rsvp-q-title span {
-        color: #b7ac86;
-        font-size: 13px;
-        font-style: italic;
-      }
-      .rsvp-opts {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px 18px;
-        color: #efe8d7;
-        font-family: "PT Serif", Georgia, serif;
-        font-size: 15px;
-      }
-      .rsvp-opts label {
-        cursor: pointer;
-        display: inline-flex;
-        gap: 7px;
-        align-items: center;
-      }
-      .rsvp-opts input {
-        accent-color: #b79b5b;
-        width: 16px;
-        height: 16px;
-      }
-      .rsvp-submit {
-        cursor: pointer;
-        font-family: "Playfair Display", serif;
-        font-size: 17px;
-        letter-spacing: 0.3px;
-        color: #2c3e33;
-        background: #efe8d7;
-        border: none;
-        border-radius: 30px;
-        padding: 13px 28px;
-        margin-top: 4px;
-        box-shadow: 0 3px 0 rgba(0, 0, 0, 0.25);
-        transition: transform 0.15s, box-shadow 0.15s;
-      }
-      .rsvp-submit:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
-      }
-      .rsvp-thanks {
-        color: #efe8d7;
-        font-family: "PT Serif", Georgia, serif;
-        font-size: 16px;
-        line-height: 1.5;
-        text-align: center;
-        max-width: 420px;
-      }
-      .rsvp-cal-row {
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-top: 8px;
-      }
-      .cal-btn-ghost {
-        background: transparent;
-        color: #efe8d7;
-        border: 1px solid #b79b5b;
+        border-radius: 0;
         box-shadow: none;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-      }
-      .cal-btn-ghost:hover {
-        background: rgba(239, 232, 215, 0.1);
-        transform: translateY(-1px);
-        box-shadow: none;
+        overflow: visible;
       }
 
-      /* ===== Decorative collage accents (desktop only) ===== */
+      /* each section is a full-width band; its content is capped & centered */
+      #page>div:not(.accent) {
+        width: 100% !important;
+      }
+
+      #page>div>* {
+        max-width: 720px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      /* HERO — full-width banner */
+      #page>div[data-pencil-name="Hero Wrap"] {
+        padding: 0;
+      }
+
+      #page>div[data-pencil-name="Hero Wrap"]>* {
+        max-width: none;
+      }
+
+      [data-pencil-name="Hero Card"] {
+        border-radius: 0 !important;
+        height: 600px !important;
+      }
+
+      /* CARPET polaroids — full-width carpet band, cluster centered */
+      #page [data-pencil-name="Polaroid Жених"] {
+        left: calc(50% - 175px) !important;
+      }
+
+      #page [data-pencil-name="Polaroid Невеста"] {
+        left: calc(50% - 25px) !important;
+      }
+
+      #page [data-pencil-name="Equation"] {
+        left: calc(50% - 193px) !important;
+      }
+
+      /* dark carpet overlay must span the full band, not be capped to 720 */
+      #page [data-pencil-name="Equation BG"] {
+        max-width: none !important;
+        margin: 0 !important;
+      }
+
+      /* RSVP — full-width green band */
+      #page>div[data-pencil-name="RSVP Wrap"] {
+        padding: 0;
+      }
+
+      #page>div[data-pencil-name="RSVP Wrap"]>* {
+        max-width: none;
+      }
+
+      [data-pencil-name="RSVP Card"] {
+        border-radius: 0 !important;
+      }
+
+      [data-pencil-name="RSVP Card"]>* {
+        max-width: 460px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      /* FILM STRIP — full-width band */
+      #page>div[data-pencil-name="Film Strip Section"] {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      #page>div[data-pencil-name="Film Strip Section"]>* {
+        max-width: none;
+      }
+
+      #page [data-pencil-name="Film Photos"] {
+        height: 220px !important;
+      }
+    }
+
+    /* show decorative collage accents only when side gutters are wide enough */
+    @media (min-width: 1240px) {
       .accent {
-        display: none;
+        display: block;
+        position: absolute;
+        width: 210px;
+        height: 270px;
+        background-image: url("feast-collage.png");
+        background-size: cover;
+        background-position: center;
+        border: 7px solid #fbf7ee;
+        border-radius: 3px;
+        box-shadow: 0 16px 36px rgba(28, 10, 12, 0.4);
+        z-index: 5;
       }
 
-      /* safety: never let the big hero names overflow on small phones */
-      @media (max-width: 430px) {
-        [data-pencil-name="Names"] {
-          font-size: 34px !important;
-        }
+      .accent-1 {
+        left: -42px;
+        top: 1330px;
+        transform: rotate(-5deg);
       }
 
-      /* ===== Horizontal / desktop: two-column magazine layout ===== */
-      /* ===== Horizontal / desktop: single column, full-width bands ===== */
-      @media (min-width: 1000px) {
-        body {
-          align-items: stretch;
-          padding: 0;
-          background: #ebe3d2;
-        }
-        #page {
-          position: relative;
-          width: 100%;
-          max-width: 100%;
-          border-radius: 0;
-          box-shadow: none;
-          overflow: visible;
-        }
-        /* each section is a full-width band; its content is capped & centered */
-        #page > div:not(.accent) {
-          width: 100% !important;
-        }
-        #page > div > * {
-          max-width: 720px;
-          margin-left: auto;
-          margin-right: auto;
-        }
-
-        /* HERO — full-width banner */
-        #page > div[data-pencil-name="Hero Wrap"] {
-          padding: 0;
-        }
-        #page > div[data-pencil-name="Hero Wrap"] > * {
-          max-width: none;
-        }
-        [data-pencil-name="Hero Card"] {
-          border-radius: 0 !important;
-          height: 600px !important;
-        }
-
-        /* CARPET polaroids — full-width carpet band, cluster centered */
-        #page [data-pencil-name="Polaroid Жених"] {
-          left: calc(50% - 175px) !important;
-        }
-        #page [data-pencil-name="Polaroid Невеста"] {
-          left: calc(50% - 25px) !important;
-        }
-        #page [data-pencil-name="Equation"] {
-          left: calc(50% - 193px) !important;
-        }
-        /* dark carpet overlay must span the full band, not be capped to 720 */
-        #page [data-pencil-name="Equation BG"] {
-          max-width: none !important;
-          margin: 0 !important;
-        }
-
-        /* RSVP — full-width green band */
-        #page > div[data-pencil-name="RSVP Wrap"] {
-          padding: 0;
-        }
-        #page > div[data-pencil-name="RSVP Wrap"] > * {
-          max-width: none;
-        }
-        [data-pencil-name="RSVP Card"] {
-          border-radius: 0 !important;
-        }
-        [data-pencil-name="RSVP Card"] > * {
-          max-width: 460px;
-          margin-left: auto;
-          margin-right: auto;
-        }
-
-        /* FILM STRIP — full-width band */
-        #page > div[data-pencil-name="Film Strip Section"] {
-          padding-left: 0;
-          padding-right: 0;
-        }
-        #page > div[data-pencil-name="Film Strip Section"] > * {
-          max-width: none;
-        }
-        #page [data-pencil-name="Film Photos"] {
-          height: 220px !important;
-        }
+      .accent-2 {
+        right: -42px;
+        top: 1640px;
+        transform: rotate(5deg);
       }
 
-      /* show decorative collage accents only when side gutters are wide enough */
-      @media (min-width: 1240px) {
-        .accent {
-          display: block;
-          position: absolute;
-          width: 210px;
-          height: 270px;
-          background-image: url("feast-collage.png");
-          background-size: cover;
-          background-position: center;
-          border: 7px solid #fbf7ee;
-          border-radius: 3px;
-          box-shadow: 0 16px 36px rgba(28, 10, 12, 0.4);
-          z-index: 5;
-        }
-        .accent-1 {
-          left: -42px;
-          top: 1330px;
-          transform: rotate(-5deg);
-        }
-        .accent-2 {
-          right: -42px;
-          top: 1640px;
-          transform: rotate(5deg);
-        }
-        .accent-3 {
-          left: -42px;
-          top: 2520px;
-          transform: rotate(4deg);
-        }
+      .accent-3 {
+        left: -42px;
+        top: 2520px;
+        transform: rotate(4deg);
       }
-    </style>
-  </head>
-  <body>
-    <div
-      id="page"
-      data-pencil-name="Свадьба · одностраничник"
-      class="box-border w-[390px] h-fit flex flex-col gap-0 justify-start items-start bg-[#EBE3D2] overflow-hidden"
-    >
-      <div
-        data-pencil-name="Hero Wrap"
-        class="span-all box-border w-full h-fit shrink-0 flex flex-col gap-0 p-[14px] justify-start items-start bg-[#EBE3D2]"
-      >
-        <div
-          data-pencil-name="Hero Card"
-          class="box-border w-full h-[520px] shrink-0 flex flex-col gap-[6px] p-[0px_26px_34px_26px] justify-end items-center [background-image:linear-gradient(180deg,_#22302800_0%,_#1C2820F2_100%),_url('images/2.jpg')] [background-repeat:no-repeat,_no-repeat] [background-size:100%_100%,_cover] [background-position:0%_0%,_center] rounded-[18px] overflow-hidden"
-        >
-          <div
-            data-pencil-name="Kicker"
-            class="text-[22px]/[normal] box-border text-[#EFE8D7] font-['Playfair_Display',system-ui,sans-serif] font-normal tracking-[3px] text-left [white-space:nowrap]"
-          >
-            Свадьба
-          </div>
-          <div
-            data-pencil-name="Date"
-            class="text-[15px]/[normal] box-border text-[#EFE8D7] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[4px] text-left [white-space:nowrap]"
-          >
-            14 | 08 | 2026
-          </div>
-          <div
-            data-pencil-name="Names"
-            class="text-[44px]/[normal] box-border text-[#EFE8D7] font-['Marck_Script',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-          >
-            Вася &amp; Ксюша
-          </div>
-          <div
-            data-pencil-name="Subtitle"
-            class="text-[14px]/[18px] box-border w-[300px] text-[#EFE8D7] font-['PT_Serif',system-ui,sans-serif] font-normal italic text-center"
-          >
-            Это не просто свадьба — это тусовка года! И ты в списке гостей!
-          </div>
+    }
+  </style>
+</head>
+
+<body>
+  <div id="page" data-pencil-name="Свадьба · одностраничник"
+    class="box-border w-[390px] h-fit flex flex-col gap-0 justify-start items-start bg-[#EBE3D2] overflow-hidden">
+    <div data-pencil-name="Hero Wrap"
+      class="span-all box-border w-full h-fit shrink-0 flex flex-col gap-0 p-[14px] justify-start items-start bg-[#EBE3D2]">
+      <div data-pencil-name="Hero Card"
+        class="box-border w-full h-[520px] shrink-0 flex flex-col gap-[6px] p-[0px_26px_34px_26px] justify-end items-center [background-image:linear-gradient(180deg,_#22302800_0%,_#1C2820F2_100%),_url('images/2.jpg')] [background-repeat:no-repeat,_no-repeat] [background-size:100%_100%,_cover] [background-position:0%_0%,_center] rounded-[18px] overflow-hidden">
+        <div data-pencil-name="Kicker"
+          class="text-[22px]/[normal] box-border text-[#EFE8D7] font-['Playfair_Display',system-ui,sans-serif] font-normal tracking-[3px] text-left [white-space:nowrap]">
+          Свадьба
+        </div>
+        <div data-pencil-name="Date"
+          class="text-[15px]/[normal] box-border text-[#EFE8D7] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[4px] text-left [white-space:nowrap]">
+          14 | 08 | 2026
+        </div>
+        <div data-pencil-name="Names"
+          class="text-[44px]/[normal] box-border text-[#EFE8D7] font-['Marck_Script',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+          Вася &amp; Ксюша
+        </div>
+        <div data-pencil-name="Subtitle"
+          class="text-[14px]/[18px] box-border w-[300px] text-[#EFE8D7] font-['PT_Serif',system-ui,sans-serif] font-normal italic text-center">
+          Это не просто свадьба — это тусовка года! И ты в списке гостей!
         </div>
       </div>
-      <div
-        data-pencil-name="Hero Polaroids"
-        class="box-border w-full h-[506px] shrink-0 bg-[url('./images/generated-1782730360715.png')] bg-no-repeat bg-cover bg-center overflow-hidden relative"
-      >
-        <div
-          data-pencil-name="Polaroid Жених"
-          class="box-border w-[200px] h-fit [box-shadow:0px_10px_24px_0px_#1C0A0CB0] absolute left-[20px] top-[20px] flex flex-col gap-[8px] p-[10px_10px_8px_10px] justify-start items-start bg-[#FBF7EE] rounded-[3px] [z-index:2]"
-        >
-          <div
-            data-pencil-name="Photo Жених"
-            class="box-border w-full aspect-square shrink-0 bg-[url('./images/4.jpg')] bg-no-repeat bg-cover bg-center"
-          ></div>
-          <div
-            data-pencil-name="Cap"
-            class="text-[26px]/[normal] box-border w-full text-[#2B2622] font-['Marck_Script',system-ui,sans-serif] font-normal text-center"
-          >
-            Вася
-          </div>
+    </div>
+    <div data-pencil-name="Hero Polaroids"
+      class="box-border w-full h-[506px] shrink-0 bg-[url('./images/generated-1782730360715.png')] bg-no-repeat bg-cover bg-center overflow-hidden relative">
+      <div data-pencil-name="Polaroid Жених"
+        class="box-border w-[200px] h-fit [box-shadow:0px_10px_24px_0px_#1C0A0CB0] absolute left-[20px] top-[20px] flex flex-col gap-[8px] p-[10px_10px_8px_10px] justify-start items-start bg-[#FBF7EE] rounded-[3px] [z-index:2]">
+        <div data-pencil-name="Photo Жених"
+          class="box-border w-full aspect-square shrink-0 bg-[url('./images/4.jpg')] bg-no-repeat bg-cover bg-center">
         </div>
-        <div
-          data-pencil-name="Equation BG"
-          class="box-border absolute inset-0 bg-[#12060766] [z-index:1]"
-        ></div>
-        <div
-          data-pencil-name="Equation"
-          class="text-[19px]/[normal] box-border w-[386px] absolute left-[2px] top-[466px] text-[#F4ECDA] font-['Marck_Script',system-ui,sans-serif] font-normal text-center [z-index:3]"
-          style="text-shadow: 0 0 7px #000, 0 0 14px #000, 0 1px 2px #000"
-        >
-          Жених + Невеста = тили-тили-тесто
-        </div>
-        <div
-          data-pencil-name="Polaroid Невеста"
-          class="box-border w-[200px] h-fit [box-shadow:0px_10px_24px_0px_#1C0A0CB0] absolute left-[166px] top-[223px] flex flex-col gap-[8px] p-[10px_10px_8px_10px] justify-start items-start bg-[#FBF7EE] rounded-[3px] [z-index:4]"
-        >
-          <div
-            data-pencil-name="Photo Невеста"
-            class="box-border w-full aspect-square shrink-0 bg-[url('./images/5.jpg')] bg-no-repeat bg-cover bg-center [transform:scaleX(-1)]"
-          ></div>
-          <div
-            data-pencil-name="Cap"
-            class="text-[26px]/[normal] box-border w-full text-[#2B2622] font-['Marck_Script',system-ui,sans-serif] font-normal text-center"
-          >
-            Ксюша
-          </div>
+        <div data-pencil-name="Cap"
+          class="text-[26px]/[normal] box-border w-full text-[#2B2622] font-['Marck_Script',system-ui,sans-serif] font-normal text-center">
+          Вася
         </div>
       </div>
-      <div
-        data-pencil-name="Greeting"
-        class="box-border w-full h-fit shrink-0 flex flex-col gap-[16px] p-[34px_30px_18px_30px] justify-start items-center bg-[#EBE3D2]"
-      >
-        <div
-          data-pencil-name="Greeting Title"
-          class="text-[30px]/[normal] box-border text-[#2C3E33] font-['Marck_Script',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-        >
-          Дорогие родные и близкие!
+      <div data-pencil-name="Equation BG" class="box-border absolute inset-0 bg-[#12060766] [z-index:1]"></div>
+      <div data-pencil-name="Equation"
+        class="text-[19px]/[normal] box-border w-[386px] absolute left-[2px] top-[466px] text-[#F4ECDA] font-['Marck_Script',system-ui,sans-serif] font-normal text-center [z-index:3]"
+        style="text-shadow: 0 0 7px #000, 0 0 14px #000, 0 1px 2px #000">
+        Жених + Невеста = тили-тили-тесто
+      </div>
+      <div data-pencil-name="Polaroid Невеста"
+        class="box-border w-[200px] h-fit [box-shadow:0px_10px_24px_0px_#1C0A0CB0] absolute left-[166px] top-[223px] flex flex-col gap-[8px] p-[10px_10px_8px_10px] justify-start items-start bg-[#FBF7EE] rounded-[3px] [z-index:4]">
+        <div data-pencil-name="Photo Невеста"
+          class="box-border w-full aspect-square shrink-0 bg-[url('./images/5.jpg')] bg-no-repeat bg-cover bg-center [transform:scaleX(-1)]">
         </div>
-        <div
-          data-pencil-name="Greeting Body"
-          class="text-[15px]/[23px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal text-center"
-        >
-          Мы так соскучились и наконец у нас есть шикарный повод собраться вместе — отметить 4 года
-          нашей любви и создание семьи 💞
+        <div data-pencil-name="Cap"
+          class="text-[26px]/[normal] box-border w-full text-[#2B2622] font-['Marck_Script',system-ui,sans-serif] font-normal text-center">
+          Ксюша
         </div>
       </div>
-      <div
-        data-pencil-name="Calendar Section"
-        class="box-border w-full h-fit shrink-0 flex flex-col gap-[16px] p-[12px_30px_24px_30px] justify-start items-center bg-[#EBE3D2]"
-      >
-        <div
-          data-pencil-name="Calendar Card"
-          class="box-border w-full h-fit shrink-0 flex flex-col gap-[6px] p-[16px_14px] justify-start items-start bg-[#E3D9C2] [border:1px_solid_#C7BBA0] rounded-[12px]"
-        >
-          <div
-            data-pencil-name="Cal Title"
-            class="text-[22px]/[normal] box-border w-full text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-center"
-          >
-            Август
-          </div>
-          <div
-            data-pencil-name="Weekdays"
-            class="box-border w-full h-fit shrink-0 flex flex-row gap-[2px] justify-start items-start"
-          >
-            <div
-              data-pencil-name="WD ПН"
-              class="box-border [flex:1_1_0] h-[26px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="t"
-                class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]"
-              >
-                ПН
-              </div>
-            </div>
-            <div
-              data-pencil-name="WD ВТ"
-              class="box-border [flex:1_1_0] h-[26px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="t"
-                class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]"
-              >
-                ВТ
-              </div>
-            </div>
-            <div
-              data-pencil-name="WD СР"
-              class="box-border [flex:1_1_0] h-[26px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="t"
-                class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]"
-              >
-                СР
-              </div>
-            </div>
-            <div
-              data-pencil-name="WD ЧТ"
-              class="box-border [flex:1_1_0] h-[26px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="t"
-                class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]"
-              >
-                ЧТ
-              </div>
-            </div>
-            <div
-              data-pencil-name="WD ПТ"
-              class="box-border [flex:1_1_0] h-[26px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="t"
-                class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]"
-              >
-                ПТ
-              </div>
-            </div>
-            <div
-              data-pencil-name="WD СБ"
-              class="box-border [flex:1_1_0] h-[26px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="t"
-                class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]"
-              >
-                СБ
-              </div>
-            </div>
-            <div
-              data-pencil-name="WD ВС"
-              class="box-border [flex:1_1_0] h-[26px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="t"
-                class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]"
-              >
-                ВС
-              </div>
-            </div>
-          </div>
-          <div
-            data-pencil-name="Week"
-            class="box-border w-full h-fit shrink-0 flex flex-row gap-[2px] justify-start items-start"
-          >
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            ></div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            ></div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            ></div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            ></div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            ></div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                1
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                2
-              </div>
-            </div>
-          </div>
-          <div
-            data-pencil-name="Week"
-            class="box-border w-full h-fit shrink-0 flex flex-row gap-[2px] justify-start items-start"
-          >
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                3
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                4
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                5
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                6
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                7
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                8
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                9
-              </div>
-            </div>
-          </div>
-          <div
-            data-pencil-name="Week"
-            class="box-border w-full h-fit shrink-0 flex flex-row gap-[2px] justify-start items-start"
-          >
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                10
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                11
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                12
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                13
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="Today"
-                class="box-border w-[30px] h-[30px] shrink-0 flex flex-col gap-0 justify-center items-center bg-[#2C3E33] rounded-[15px]"
-              >
-                <div
-                  data-pencil-name="d"
-                  class="text-[15px]/[normal] box-border text-[#EFE8D7] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-                >
-                  14
-                </div>
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                15
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                16
-              </div>
-            </div>
-          </div>
-          <div
-            data-pencil-name="Week"
-            class="box-border w-full h-fit shrink-0 flex flex-row gap-[2px] justify-start items-start"
-          >
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                17
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                18
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                19
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                20
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                21
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                22
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                23
-              </div>
-            </div>
-          </div>
-          <div
-            data-pencil-name="Week"
-            class="box-border w-full h-fit shrink-0 flex flex-row gap-[2px] justify-start items-start"
-          >
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                24
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                25
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                26
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                27
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                28
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                29
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                30
-              </div>
-            </div>
-          </div>
-          <div
-            data-pencil-name="Week"
-            class="box-border w-full h-fit shrink-0 flex flex-row gap-[2px] justify-start items-start"
-          >
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            >
-              <div
-                data-pencil-name="d"
-                class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-              >
-                31
-              </div>
-            </div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            ></div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            ></div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            ></div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            ></div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            ></div>
-            <div
-              data-pencil-name="Cell"
-              class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"
-            ></div>
-          </div>
-        </div>
-        <div
-          data-pencil-name="Cal Note"
-          class="text-[14px]/[20px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal italic text-center"
-        >
-          Мы искренне будем рады видеть вас в кругу наших гостей!
-        </div>
+    </div>
+    <div data-pencil-name="Greeting"
+      class="box-border w-full h-fit shrink-0 flex flex-col gap-[16px] p-[34px_30px_18px_30px] justify-start items-center bg-[#EBE3D2]">
+      <div data-pencil-name="Greeting Title"
+        class="text-[30px]/[normal] box-border text-[#2C3E33] font-['Marck_Script',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+        Дорогие родные и близкие!
       </div>
-      <div
-        data-pencil-name="Location"
-        class="box-border w-full h-fit shrink-0 flex flex-col gap-[10px] p-[18px_30px] justify-start items-center bg-[#EBE3D2]"
-      >
-        <div
-          data-pencil-name="Loc Title"
-          class="text-[24px]/[normal] box-border text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-        >
-          Локация
-        </div>
-        <div
-          data-pencil-name="Loc Place"
-          class="text-[15px]/[21px] box-border w-full text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-center"
-        >
-          Встречаемся в Васиной деревне Лунинецкого района
-        </div>
-        <div
-          data-pencil-name="Loc Addr"
-          class="text-[14px]/[20px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal text-center"
-        >
-          Точный адрес пришлём позже!
-        </div>
+      <div data-pencil-name="Greeting Body"
+        class="text-[15px]/[23px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal text-center">
+        Мы так соскучились и наконец у нас есть шикарный повод собраться вместе — отметить 4 года
+        нашей любви и создание семьи 💞
       </div>
-      <div
-        data-pencil-name="Film Strip Section"
-        class="box-border w-full h-fit shrink-0 flex flex-col gap-[18px] p-[22px_16px_26px_16px] justify-start items-center bg-[#EBE3D2]"
-      >
-        <div
-          data-pencil-name="Film Strip"
-          class="box-border w-full h-fit shrink-0 flex flex-col gap-[8px] p-[8px] justify-start items-start bg-[#0C0C10] rounded-[4px]"
-        >
-          <div
-            data-pencil-name="Sprockets Top"
-            class="box-border w-full h-fit shrink-0 flex flex-row gap-[7px] justify-start items-start"
-          >
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-          </div>
-          <div
-            data-pencil-name="Film Photos"
-            class="box-border w-full h-[150px] shrink-0 flex flex-row gap-[6px] justify-start items-stretch overflow-hidden"
-          >
-            <div
-              data-pencil-name="FP1"
-              class="box-border [flex:1_1_0] min-w-0 h-full bg-[url('feast-evening.png')] bg-no-repeat bg-cover bg-center rounded-[2px]"
-            ></div>
-            <div
-              data-pencil-name="FP2"
-              class="box-border [flex:1_1_0] min-w-0 h-full bg-[url('images/3.jpg')] bg-no-repeat bg-cover bg-center rounded-[2px]"
-            ></div>
-            <div
-              data-pencil-name="FP3"
-              class="box-border [flex:1_1_0] min-w-0 h-full bg-[url('images/1.jpg')] bg-no-repeat bg-cover bg-center rounded-[2px]"
-            ></div>
-          </div>
-          <div
-            data-pencil-name="Sprockets Bottom"
-            class="box-border w-full h-fit shrink-0 flex flex-row gap-[7px] justify-start items-start"
-          >
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-            <div
-              data-pencil-name="h"
-              class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"
-            ></div>
-          </div>
+    </div>
+    <div data-pencil-name="Calendar Section"
+      class="box-border w-full h-fit shrink-0 flex flex-col gap-[16px] p-[12px_30px_24px_30px] justify-start items-center bg-[#EBE3D2]">
+      <div data-pencil-name="Calendar Card"
+        class="box-border w-full h-fit shrink-0 flex flex-col gap-[6px] p-[16px_14px] justify-start items-start bg-[#E3D9C2] [border:1px_solid_#C7BBA0] rounded-[12px]">
+        <div data-pencil-name="Cal Title"
+          class="text-[22px]/[normal] box-border w-full text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-center">
+          Август
         </div>
-      </div>
-      <div
-        data-pencil-name="Countdown"
-        class="box-border w-full h-fit shrink-0 flex flex-col gap-[8px] p-[28px_24px] justify-start items-center bg-[#EBE2D1]"
-      >
-        <div
-          data-pencil-name="CD Title"
-          class="text-[28px]/[normal] box-border text-[#2C3E33] font-['Marck_Script',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-        >
-          Мы скажем «Да»
-        </div>
-        <div
-          data-pencil-name="CD Sub"
-          class="text-[14px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal italic text-left [white-space:nowrap]"
-        >
-          через…
-        </div>
-        <div
-          data-pencil-name="CD Row"
-          class="box-border w-fit h-fit shrink-0 flex flex-row gap-[10px] p-[8px_0px_0px_0px] justify-start items-center"
-        >
-          <div
-            data-pencil-name="CD Cell"
-            class="box-border w-fit shrink-0 h-fit flex flex-col gap-[4px] justify-start items-center"
-          >
-            <div
-              id="cd-days"
-              data-pencil-name="num"
-              class="text-[32px]/[normal] box-border text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-            >
-              46
-            </div>
-            <div
-              data-pencil-name="lbl"
-              class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]"
-            >
-              дней
+        <div data-pencil-name="Weekdays"
+          class="box-border w-full h-fit shrink-0 flex flex-row gap-[2px] justify-start items-start">
+          <div data-pencil-name="WD ПН"
+            class="box-border [flex:1_1_0] h-[26px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="t"
+              class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]">
+              ПН
             </div>
           </div>
-          <div
-            data-pencil-name="Sep"
-            class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[0px_0px_16px_0px] justify-center items-start"
-          >
-            <div
-              data-pencil-name="sep"
-              class="text-[26px]/[normal] box-border text-[#C7BBA0] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-            >
-              :
+          <div data-pencil-name="WD ВТ"
+            class="box-border [flex:1_1_0] h-[26px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="t"
+              class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]">
+              ВТ
             </div>
           </div>
-          <div
-            data-pencil-name="CD Cell"
-            class="box-border w-fit shrink-0 h-fit flex flex-col gap-[4px] justify-start items-center"
-          >
-            <div
-              id="cd-hours"
-              data-pencil-name="num"
-              class="text-[32px]/[normal] box-border text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-            >
+          <div data-pencil-name="WD СР"
+            class="box-border [flex:1_1_0] h-[26px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="t"
+              class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]">
+              СР
+            </div>
+          </div>
+          <div data-pencil-name="WD ЧТ"
+            class="box-border [flex:1_1_0] h-[26px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="t"
+              class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]">
+              ЧТ
+            </div>
+          </div>
+          <div data-pencil-name="WD ПТ"
+            class="box-border [flex:1_1_0] h-[26px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="t"
+              class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]">
+              ПТ
+            </div>
+          </div>
+          <div data-pencil-name="WD СБ"
+            class="box-border [flex:1_1_0] h-[26px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="t"
+              class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]">
+              СБ
+            </div>
+          </div>
+          <div data-pencil-name="WD ВС"
+            class="box-border [flex:1_1_0] h-[26px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="t"
+              class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]">
+              ВС
+            </div>
+          </div>
+        </div>
+        <div data-pencil-name="Week"
+          class="box-border w-full h-fit shrink-0 flex flex-row gap-[2px] justify-start items-start">
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"></div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"></div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"></div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"></div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"></div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              1
+            </div>
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              2
+            </div>
+          </div>
+        </div>
+        <div data-pencil-name="Week"
+          class="box-border w-full h-fit shrink-0 flex flex-row gap-[2px] justify-start items-start">
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              3
+            </div>
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              4
+            </div>
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              5
+            </div>
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              6
+            </div>
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              7
+            </div>
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              8
+            </div>
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              9
+            </div>
+          </div>
+        </div>
+        <div data-pencil-name="Week"
+          class="box-border w-full h-fit shrink-0 flex flex-row gap-[2px] justify-start items-start">
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              10
+            </div>
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              11
+            </div>
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
               12
             </div>
-            <div
-              data-pencil-name="lbl"
-              class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]"
-            >
-              часов
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              13
             </div>
           </div>
-          <div
-            data-pencil-name="Sep"
-            class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[0px_0px_16px_0px] justify-center items-start"
-          >
-            <div
-              data-pencil-name="sep"
-              class="text-[26px]/[normal] box-border text-[#C7BBA0] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-            >
-              :
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="Today"
+              class="box-border w-[30px] h-[30px] shrink-0 flex flex-col gap-0 justify-center items-center bg-[#2C3E33] rounded-[15px]">
+              <div data-pencil-name="d"
+                class="text-[15px]/[normal] box-border text-[#EFE8D7] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+                14
+              </div>
             </div>
           </div>
-          <div
-            data-pencil-name="CD Cell"
-            class="box-border w-fit shrink-0 h-fit flex flex-col gap-[4px] justify-start items-center"
-          >
-            <div
-              id="cd-min"
-              data-pencil-name="num"
-              class="text-[32px]/[normal] box-border text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-            >
-              45
-            </div>
-            <div
-              data-pencil-name="lbl"
-              class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]"
-            >
-              минут
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              15
             </div>
           </div>
-          <div
-            data-pencil-name="Sep"
-            class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[0px_0px_16px_0px] justify-center items-start"
-          >
-            <div
-              data-pencil-name="sep"
-              class="text-[26px]/[normal] box-border text-[#C7BBA0] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-            >
-              :
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              16
             </div>
           </div>
-          <div
-            data-pencil-name="CD Cell"
-            class="box-border w-fit shrink-0 h-fit flex flex-col gap-[4px] justify-start items-center"
-          >
-            <div
-              id="cd-sec"
-              data-pencil-name="num"
-              class="text-[32px]/[normal] box-border text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-            >
+        </div>
+        <div data-pencil-name="Week"
+          class="box-border w-full h-fit shrink-0 flex flex-row gap-[2px] justify-start items-start">
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              17
+            </div>
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              18
+            </div>
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              19
+            </div>
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
               20
             </div>
-            <div
-              data-pencil-name="lbl"
-              class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]"
-            >
-              секунд
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              21
+            </div>
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              22
+            </div>
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              23
             </div>
           </div>
         </div>
-      </div>
-      <div
-        data-pencil-name="Dress Code"
-        class="box-border w-full h-fit shrink-0 flex flex-col gap-[12px] p-[24px_30px] justify-start items-center bg-[#EBE3D2]"
-      >
-        <div
-          data-pencil-name="Dress Title"
-          class="text-[24px]/[normal] box-border text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-        >
-          Дресс-код
-        </div>
-        <div
-          data-pencil-name="Dress P1"
-          class="text-[15px]/[23px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal text-center"
-        >
-          Мы будем очень рады, если вы поддержите цветовую гамму праздника:
-        </div>
-        <div
-          data-pencil-name="Swatches"
-          class="box-border w-full h-fit shrink-0 flex flex-row flex-nowrap gap-[8px] p-[8px_0px_0px_0px] justify-center items-center"
-        >
-          <div class="box-border w-[36px] h-[36px] shrink-0 rounded-full bg-[#1E1B18]"></div>
-          <div class="box-border w-[36px] h-[36px] shrink-0 rounded-full bg-[#5C4433]"></div>
-          <div class="box-border w-[36px] h-[36px] shrink-0 rounded-full bg-[#8A6B52]"></div>
-          <div class="box-border w-[36px] h-[36px] shrink-0 rounded-full bg-[#C9B592]"></div>
-          <div class="box-border w-[36px] h-[36px] shrink-0 rounded-full bg-[#E3D8C4]"></div>
-          <div class="box-border w-[36px] h-[36px] shrink-0 rounded-full bg-[#A9BE9C]"></div>
-          <div class="box-border w-[36px] h-[36px] shrink-0 rounded-full bg-[#6E8557]"></div>
-        </div>
-      </div>
-      <div
-        data-pencil-name="Подарки"
-        class="box-border w-full h-fit shrink-0 flex flex-col gap-[14px] p-[24px_30px] justify-start items-center bg-[#EBE3D2]"
-      >
-        <div
-          data-pencil-name="Gifts Title"
-          class="text-[24px]/[normal] box-border w-full text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-center"
-        >
-          Пожелания по подаркам
-        </div>
-        <div
-          data-pencil-name="Gifts Body"
-          class="text-[15px]/[24px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal text-center"
-        >
-          Самый ценный подарок для нас — ваше присутствие в день свадьбы.
-        </div>
-        <div
-          data-pencil-name="Gifts Body 2"
-          class="text-[15px]/[24px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal text-center"
-        >
-          Вместо цветов, если захотите нас порадовать, будем рады конверту с тёплым письмом от руки,
-          вашей фотографией с нами и любимой белорусской сладостью (чтобы всё поместилось в один
-          конверт).
-        </div>
-      </div>
-      <div
-        data-pencil-name="Интерактив"
-        class="box-border w-full h-fit shrink-0 flex flex-col gap-[14px] p-[24px_30px] justify-start items-center bg-[#EBE3D2]"
-      >
-        <div
-          data-pencil-name="Fun Icon"
-          class="box-border w-[63px] h-[87px] bg-[url('images/8.png')] bg-no-repeat bg-contain bg-center"
-        ></div>
-        <div
-          data-pencil-name="Fun Title"
-          class="text-[24px]/[normal] box-border text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-        >
-          Интерактив
-        </div>
-        <div
-          data-pencil-name="Fun Body"
-          class="text-[15px]/[24px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal text-center"
-        >
-          Хотим провести этот день душевно и весело, в кругу близких — без ведущего и лишнего шоу.
-        </div>
-        <div
-          data-pencil-name="Fun Body 2"
-          class="text-[15px]/[24px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal text-center"
-        >
-          Поэтому просим каждого придумать и провести один любой конкурс или интерактив. Это шанс
-          проявить себя и порадовать нас 😍
-        </div>
-        <div
-          data-pencil-name="Fun Body 3"
-          class="text-[15px]/[24px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal text-center"
-        >
-          Маленькое задание на выход из зоны комфорта от невесты-психолога 🤭 У тебя всё получится!
-        </div>
-      </div>
-      <div
-        data-pencil-name="RSVP Wrap"
-        class="span-all box-border w-full h-fit shrink-0 flex flex-col gap-0 p-[10px_14px_14px_14px] justify-start items-start bg-[#EBE3D2]"
-      >
-        <div
-          data-pencil-name="RSVP Card"
-          class="box-border w-full h-fit shrink-0 flex flex-col gap-[14px] p-[30px_28px] justify-start items-center bg-[#2C3E33] rounded-[16px]"
-        >
-          <div
-            data-pencil-name="RSVP Title"
-            class="text-[34px]/[normal] box-border text-[#EFE8D7] font-['Marck_Script',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-          >
-            Я точно буду!
-          </div>
-          <div
-            data-pencil-name="RSVP Body"
-            class="text-[14px]/[21px] box-border w-full text-[#EFE8D7] font-['PT_Serif',system-ui,sans-serif] font-normal text-center"
-          >
-            Если ты дочитал(а) до сюда — значит, ты с нами. Подтверди, пожалуйста, своё присутствие,
-            чтобы мы заняли для тебя место за столом.
-          </div>
-          <form id="rsvp-form" class="rsvp-form">
-            <input type="text" name="name" placeholder="Имя и фамилия" required />
-            <div class="rsvp-choice">
-              <label><input type="radio" name="attend" value="Буду" /> Буду 🎉</label>
-              <label><input type="radio" name="attend" value="Не смогу" /> Не смогу 😢</label>
+        <div data-pencil-name="Week"
+          class="box-border w-full h-fit shrink-0 flex flex-row gap-[2px] justify-start items-start">
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              24
             </div>
-            <div id="rsvp-extra" class="rsvp-extra" hidden>
-              <div class="rsvp-q">
-                <div class="rsvp-q-title">Что предпочитаешь из напитков? <span>можно выбрать несколько</span></div>
-                <div class="rsvp-opts">
-                  <label><input type="checkbox" name="drinks" value="Шампанское" /> Шампанское 🥂</label>
-                  <label><input type="checkbox" name="drinks" value="Вино" /> Вино 🍷</label>
-                  <label><input type="checkbox" name="drinks" value="Крепкий алкоголь" /> Крепкий алкоголь 🥃</label>
-                  <label><input type="checkbox" name="drinks" value="Безалкогольные напитки" /> Безалкогольные напитки 🧃</label>
-                </div>
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              25
+            </div>
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              26
+            </div>
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              27
+            </div>
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              28
+            </div>
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              29
+            </div>
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              30
+            </div>
+          </div>
+        </div>
+        <div data-pencil-name="Week"
+          class="box-border w-full h-fit shrink-0 flex flex-row gap-[2px] justify-start items-start">
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center">
+            <div data-pencil-name="d"
+              class="text-[15px]/[normal] box-border text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+              31
+            </div>
+          </div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"></div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"></div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"></div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"></div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"></div>
+          <div data-pencil-name="Cell"
+            class="box-border [flex:1_1_0] h-[34px] flex flex-col gap-0 justify-center items-center"></div>
+        </div>
+      </div>
+      <div data-pencil-name="Cal Note"
+        class="text-[14px]/[20px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal italic text-center">
+        Мы искренне будем рады видеть вас в кругу наших гостей!
+      </div>
+    </div>
+    <div data-pencil-name="Location"
+      class="box-border w-full h-fit shrink-0 flex flex-col gap-[10px] p-[18px_30px] justify-start items-center bg-[#EBE3D2]">
+      <div data-pencil-name="Loc Title"
+        class="text-[24px]/[normal] box-border text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+        Локация
+      </div>
+      <div data-pencil-name="Loc Place"
+        class="text-[15px]/[21px] box-border w-full text-[#3C3A30] font-['PT_Serif',system-ui,sans-serif] font-normal text-center">
+        Встречаемся в Васиной деревне Лунинецкого района
+      </div>
+      <div data-pencil-name="Loc Addr"
+        class="text-[14px]/[20px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal text-center">
+        Точный адрес пришлём позже!
+      </div>
+    </div>
+    <div data-pencil-name="Film Strip Section"
+      class="box-border w-full h-fit shrink-0 flex flex-col gap-[18px] p-[22px_16px_26px_16px] justify-start items-center bg-[#EBE3D2]">
+      <div data-pencil-name="Film Strip"
+        class="box-border w-full h-fit shrink-0 flex flex-col gap-[8px] p-[8px] justify-start items-start bg-[#0C0C10] rounded-[4px]">
+        <div data-pencil-name="Sprockets Top"
+          class="box-border w-full h-fit shrink-0 flex flex-row gap-[7px] justify-start items-start">
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+        </div>
+        <div data-pencil-name="Film Photos"
+          class="box-border w-full h-[150px] shrink-0 flex flex-row gap-[6px] justify-start items-stretch overflow-hidden">
+          <div data-pencil-name="FP1"
+            class="box-border [flex:1_1_0] min-w-0 h-full bg-[url('feast-evening.png')] bg-no-repeat bg-cover bg-center rounded-[2px]">
+          </div>
+          <div data-pencil-name="FP2"
+            class="box-border [flex:1_1_0] min-w-0 h-full bg-[url('images/3.jpg')] bg-no-repeat bg-cover bg-center rounded-[2px]">
+          </div>
+          <div data-pencil-name="FP3"
+            class="box-border [flex:1_1_0] min-w-0 h-full bg-[url('images/1.jpg')] bg-no-repeat bg-cover bg-center rounded-[2px]">
+          </div>
+        </div>
+        <div data-pencil-name="Sprockets Bottom"
+          class="box-border w-full h-fit shrink-0 flex flex-row gap-[7px] justify-start items-start">
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+          <div data-pencil-name="h" class="box-border [flex:1_1_0] h-[9px] bg-[#F0EDE3] rounded-[1px]"></div>
+        </div>
+      </div>
+    </div>
+    <div data-pencil-name="Countdown"
+      class="box-border w-full h-fit shrink-0 flex flex-col gap-[8px] p-[28px_24px] justify-start items-center bg-[#EBE2D1]">
+      <div data-pencil-name="CD Title"
+        class="text-[28px]/[normal] box-border text-[#2C3E33] font-['Marck_Script',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+        Мы скажем «Да»
+      </div>
+      <div data-pencil-name="CD Sub"
+        class="text-[14px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal italic text-left [white-space:nowrap]">
+        через…
+      </div>
+      <div data-pencil-name="CD Row"
+        class="box-border w-fit h-fit shrink-0 flex flex-row gap-[10px] p-[8px_0px_0px_0px] justify-start items-center">
+        <div data-pencil-name="CD Cell"
+          class="box-border w-fit shrink-0 h-fit flex flex-col gap-[4px] justify-start items-center">
+          <div id="cd-days" data-pencil-name="num"
+            class="text-[32px]/[normal] box-border text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+            46
+          </div>
+          <div data-pencil-name="lbl"
+            class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]">
+            дней
+          </div>
+        </div>
+        <div data-pencil-name="Sep"
+          class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[0px_0px_16px_0px] justify-center items-start">
+          <div data-pencil-name="sep"
+            class="text-[26px]/[normal] box-border text-[#C7BBA0] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+            :
+          </div>
+        </div>
+        <div data-pencil-name="CD Cell"
+          class="box-border w-fit shrink-0 h-fit flex flex-col gap-[4px] justify-start items-center">
+          <div id="cd-hours" data-pencil-name="num"
+            class="text-[32px]/[normal] box-border text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+            12
+          </div>
+          <div data-pencil-name="lbl"
+            class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]">
+            часов
+          </div>
+        </div>
+        <div data-pencil-name="Sep"
+          class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[0px_0px_16px_0px] justify-center items-start">
+          <div data-pencil-name="sep"
+            class="text-[26px]/[normal] box-border text-[#C7BBA0] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+            :
+          </div>
+        </div>
+        <div data-pencil-name="CD Cell"
+          class="box-border w-fit shrink-0 h-fit flex flex-col gap-[4px] justify-start items-center">
+          <div id="cd-min" data-pencil-name="num"
+            class="text-[32px]/[normal] box-border text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+            45
+          </div>
+          <div data-pencil-name="lbl"
+            class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]">
+            минут
+          </div>
+        </div>
+        <div data-pencil-name="Sep"
+          class="box-border w-fit shrink-0 h-fit flex flex-col gap-0 p-[0px_0px_16px_0px] justify-center items-start">
+          <div data-pencil-name="sep"
+            class="text-[26px]/[normal] box-border text-[#C7BBA0] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+            :
+          </div>
+        </div>
+        <div data-pencil-name="CD Cell"
+          class="box-border w-fit shrink-0 h-fit flex flex-col gap-[4px] justify-start items-center">
+          <div id="cd-sec" data-pencil-name="num"
+            class="text-[32px]/[normal] box-border text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+            20
+          </div>
+          <div data-pencil-name="lbl"
+            class="text-[11px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]">
+            секунд
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-pencil-name="Dress Code"
+      class="box-border w-full h-fit shrink-0 flex flex-col gap-[12px] p-[24px_30px] justify-start items-center bg-[#EBE3D2]">
+      <div data-pencil-name="Dress Title"
+        class="text-[24px]/[normal] box-border text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+        Дресс-код
+      </div>
+      <div data-pencil-name="Dress P1"
+        class="text-[15px]/[23px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal text-center">
+        Мы будем очень рады, если вы поддержите цветовую гамму праздника:
+      </div>
+      <div data-pencil-name="Swatches"
+        class="box-border w-full h-fit shrink-0 flex flex-row flex-nowrap gap-[8px] p-[8px_0px_0px_0px] justify-center items-center">
+        <div class="box-border w-[36px] h-[36px] shrink-0 rounded-full bg-[#1E1B18]"></div>
+        <div class="box-border w-[36px] h-[36px] shrink-0 rounded-full bg-[#5C4433]"></div>
+        <div class="box-border w-[36px] h-[36px] shrink-0 rounded-full bg-[#8A6B52]"></div>
+        <div class="box-border w-[36px] h-[36px] shrink-0 rounded-full bg-[#C9B592]"></div>
+        <div class="box-border w-[36px] h-[36px] shrink-0 rounded-full bg-[#E3D8C4]"></div>
+        <div class="box-border w-[36px] h-[36px] shrink-0 rounded-full bg-[#A9BE9C]"></div>
+        <div class="box-border w-[36px] h-[36px] shrink-0 rounded-full bg-[#6E8557]"></div>
+      </div>
+    </div>
+    <div data-pencil-name="Подарки"
+      class="box-border w-full h-fit shrink-0 flex flex-col gap-[14px] p-[24px_30px] justify-start items-center bg-[#EBE3D2]">
+      <div data-pencil-name="Gifts Title"
+        class="text-[24px]/[normal] box-border w-full text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-center">
+        Пожелания по подаркам
+      </div>
+      <div data-pencil-name="Gifts Body"
+        class="text-[15px]/[24px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal text-center">
+        Самый ценный подарок для нас — ваше присутствие в день свадьбы.
+      </div>
+      <div data-pencil-name="Gifts Body 2"
+        class="text-[15px]/[24px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal text-center">
+        Вместо цветов, если захотите нас порадовать, будем рады конверту с тёплым письмом от руки,
+        вашей фотографией с нами и любимой белорусской сладостью (чтобы всё поместилось в один
+        конверт).
+      </div>
+    </div>
+    <div data-pencil-name="Интерактив"
+      class="box-border w-full h-fit shrink-0 flex flex-col gap-[14px] p-[24px_30px] justify-start items-center bg-[#EBE3D2]">
+      <div data-pencil-name="Fun Icon"
+        class="box-border w-[63px] h-[87px] bg-[url('images/8.png')] bg-no-repeat bg-contain bg-center"></div>
+      <div data-pencil-name="Fun Title"
+        class="text-[24px]/[normal] box-border text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+        Интерактив
+      </div>
+      <div data-pencil-name="Fun Body"
+        class="text-[15px]/[24px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal text-center">
+        Хотим провести этот день душевно и весело, в кругу близких — без ведущего и лишнего шоу.
+      </div>
+      <div data-pencil-name="Fun Body 2"
+        class="text-[15px]/[24px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal text-center">
+        Поэтому просим каждого придумать и провести один любой конкурс или интерактив. Это шанс
+        проявить себя и порадовать нас 😍
+      </div>
+      <div data-pencil-name="Fun Body 3"
+        class="text-[15px]/[24px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal text-center">
+        Маленькое задание на выход из зоны комфорта от невесты-психолога 🤭 У тебя всё получится!
+      </div>
+    </div>
+    <div data-pencil-name="RSVP Wrap"
+      class="span-all box-border w-full h-fit shrink-0 flex flex-col gap-0 p-[10px_14px_14px_14px] justify-start items-start bg-[#EBE3D2]">
+      <div data-pencil-name="RSVP Card"
+        class="box-border w-full h-fit shrink-0 flex flex-col gap-[14px] p-[30px_28px] justify-start items-center bg-[#2C3E33] rounded-[16px]">
+        <div data-pencil-name="RSVP Title"
+          class="text-[34px]/[normal] box-border text-[#EFE8D7] font-['Marck_Script',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+          Я точно буду!
+        </div>
+        <div data-pencil-name="RSVP Body"
+          class="text-[14px]/[21px] box-border w-full text-[#EFE8D7] font-['PT_Serif',system-ui,sans-serif] font-normal text-center">
+          Если ты дочитал(а) до сюда — значит, ты с нами. Подтверди, пожалуйста, своё присутствие,
+          чтобы мы заняли для тебя место за столом.
+        </div>
+        <form id="rsvp-form" class="rsvp-form">
+          <input type="text" name="name" placeholder="Имя и фамилия" required />
+          <div class="rsvp-choice">
+            <label><input type="radio" name="attend" value="Буду" /> Буду 🎉</label>
+            <label><input type="radio" name="attend" value="Не смогу" /> Не смогу 😢</label>
+          </div>
+          <div id="rsvp-extra" class="rsvp-extra" hidden>
+            <div class="rsvp-q">
+              <div class="rsvp-q-title">Что предпочитаешь из напитков? <span>можно выбрать несколько</span></div>
+              <div class="rsvp-opts">
+                <label><input type="checkbox" name="drinks" value="Шампанское" /> Шампанское 🥂</label>
+                <label><input type="checkbox" name="drinks" value="Вино" /> Вино 🍷</label>
+                <label><input type="checkbox" name="drinks" value="Крепкий алкоголь" /> Крепкий алкоголь 🥃</label>
+                <label><input type="checkbox" name="drinks" value="Безалкогольные напитки" /> Безалкогольные напитки
+                  🧃</label>
               </div>
-              <div class="rsvp-q">
-                <div class="rsvp-q-title">Нужна помощь с размещением?</div>
-                <div class="rsvp-opts">
-                  <label><input type="radio" name="stay" value="Да" /> Да</label>
-                  <label><input type="radio" name="stay" value="Нет" /> Нет</label>
-                  <label><input type="radio" name="stay" value="Не знаю" /> Не знаю</label>
-                </div>
+            </div>
+            <div class="rsvp-q">
+              <div class="rsvp-q-title">Нужна помощь с размещением?</div>
+              <div class="rsvp-opts">
+                <label><input type="radio" name="stay" value="Да" /> Да</label>
+                <label><input type="radio" name="stay" value="Нет" /> Нет</label>
+                <label><input type="radio" name="stay" value="Не знаю" /> Не знаю</label>
               </div>
             </div>
-            <textarea name="msg" rows="2" placeholder="Пожелания, вопросы, идея для конкурса :)"></textarea>
-            <button type="submit" class="rsvp-submit">Подтвердить присутствие</button>
-          </form>
-          <div id="rsvp-thanks" class="rsvp-thanks" style="display: none"></div>
-          <div class="rsvp-cal-row">
-            <a id="gcal-btn" class="cal-btn cal-btn-ghost" target="_blank" rel="noopener">📅 Google Calendar</a>
+          </div>
+          <textarea name="msg" rows="2" placeholder="Пожелания, вопросы, идея для конкурса :)"></textarea>
+          <button type="submit" class="rsvp-submit">Подтвердить присутствие</button>
+        </form>
+        <div id="rsvp-thanks" class="rsvp-thanks" style="display: none"></div>
+        <div class="rsvp-cal-row">
+          <a id="gcal-btn" class="cal-btn cal-btn-ghost" target="_blank" rel="noopener">📅 Google Calendar</a>
+        </div>
+      </div>
+    </div>
+    <div data-pencil-name="Горько"
+      class="box-border w-full h-fit shrink-0 flex flex-col gap-[12px] p-[30px] justify-start items-center bg-[#EBE3D2]">
+      <div data-pencil-name="Gorko Title"
+        class="text-[24px]/[normal] box-border text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+        Примечание
+      </div>
+      <div data-pencil-name="Gorko Body"
+        class="text-[15px]/[24px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal text-center">
+        «ГОРЬКО!» — кричать обязательно! Чем громче, тем веселее. Мы за поцелуи, смех и настоящий
+        праздник! Так что не молчите — поддержите атмосферу!
+      </div>
+    </div>
+    <div data-pencil-name="Contacts"
+      class="span-all box-border w-full h-fit shrink-0 flex flex-col gap-[14px] p-[22px_30px_18px_30px] justify-start items-center bg-[#EBE3D2]">
+      <div data-pencil-name="Cont Title"
+        class="text-[24px]/[normal] box-border text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+        Контакты
+      </div>
+      <div data-pencil-name="Cont Intro"
+        class="text-[14px]/[20px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal text-center">
+        Если у вас остались вопросы — звоните, мы всегда на связи.
+      </div>
+      <div data-pencil-name="Cont Row"
+        class="box-border w-full h-fit shrink-0 flex flex-row gap-0 p-[6px_0px_0px_0px] justify-center items-center">
+        <div data-pencil-name="Contact Жених"
+          class="box-border [flex:1_1_0] h-fit flex flex-col gap-[4px] justify-start items-center">
+          <div data-pencil-name="n"
+            class="text-[24px]/[normal] box-border text-[#2C3E33] font-['Marck_Script',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+            Вася
+          </div>
+          <div data-pencil-name="p"
+            class="text-[14px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal italic text-left [white-space:nowrap]">
+            +375 25 777 4577
+          </div>
+        </div>
+        <div data-pencil-name="VDiv" class="box-border w-[1px] shrink-0 h-[46px] bg-[#C7BBA0]"></div>
+        <div data-pencil-name="Contact Невеста"
+          class="box-border [flex:1_1_0] h-fit flex flex-col gap-[4px] justify-start items-center">
+          <div data-pencil-name="n"
+            class="text-[24px]/[normal] box-border text-[#2C3E33] font-['Marck_Script',system-ui,sans-serif] font-normal text-left [white-space:nowrap]">
+            Ксюша
+          </div>
+          <div data-pencil-name="p"
+            class="text-[14px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal italic text-left [white-space:nowrap]">
+            +375 33 357 3196
           </div>
         </div>
       </div>
-      <div
-        data-pencil-name="Горько"
-        class="box-border w-full h-fit shrink-0 flex flex-col gap-[12px] p-[30px] justify-start items-center bg-[#EBE3D2]"
-      >
-        <div
-          data-pencil-name="Gorko Title"
-          class="text-[24px]/[normal] box-border text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-        >
-          Примечание
-        </div>
-        <div
-          data-pencil-name="Gorko Body"
-          class="text-[15px]/[24px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal text-center"
-        >
-          «ГОРЬКО!» — кричать обязательно! Чем громче, тем веселее. Мы за поцелуи, смех и настоящий
-          праздник! Так что не молчите — поддержите атмосферу!
-        </div>
+    </div>
+    <div data-pencil-name="Carpet Divider 2"
+      class="box-border w-full h-[20px] shrink-0 bg-[url('images/generated-1782730360715.png')] bg-cover bg-center">
+    </div>
+    <div data-pencil-name="Footer"
+      class="span-all box-border w-full h-fit shrink-0 flex flex-col gap-0 p-[10px_30px_26px_30px] justify-start items-center bg-[#EBE3D2]">
+      <div data-pencil-name="Foot"
+        class="text-[12px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]">
+        сделано с любовью · 14 августа 2026
       </div>
-      <div
-        data-pencil-name="Contacts"
-        class="span-all box-border w-full h-fit shrink-0 flex flex-col gap-[14px] p-[22px_30px_18px_30px] justify-start items-center bg-[#EBE3D2]"
-      >
-        <div
-          data-pencil-name="Cont Title"
-          class="text-[24px]/[normal] box-border text-[#2C3E33] font-['Playfair_Display',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-        >
-          Контакты
-        </div>
-        <div
-          data-pencil-name="Cont Intro"
-          class="text-[14px]/[20px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal text-center"
-        >
-          Если у вас остались вопросы — звоните, мы всегда на связи.
-        </div>
-        <div
-          data-pencil-name="Cont Row"
-          class="box-border w-full h-fit shrink-0 flex flex-row gap-0 p-[6px_0px_0px_0px] justify-center items-center"
-        >
-          <div
-            data-pencil-name="Contact Жених"
-            class="box-border [flex:1_1_0] h-fit flex flex-col gap-[4px] justify-start items-center"
-          >
-            <div
-              data-pencil-name="n"
-              class="text-[24px]/[normal] box-border text-[#2C3E33] font-['Marck_Script',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-            >
-              Вася
-            </div>
-            <div
-              data-pencil-name="p"
-              class="text-[14px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal italic text-left [white-space:nowrap]"
-            >
-              +375 25 777 4577
-            </div>
-          </div>
-          <div
-            data-pencil-name="VDiv"
-            class="box-border w-[1px] shrink-0 h-[46px] bg-[#C7BBA0]"
-          ></div>
-          <div
-            data-pencil-name="Contact Невеста"
-            class="box-border [flex:1_1_0] h-fit flex flex-col gap-[4px] justify-start items-center"
-          >
-            <div
-              data-pencil-name="n"
-              class="text-[24px]/[normal] box-border text-[#2C3E33] font-['Marck_Script',system-ui,sans-serif] font-normal text-left [white-space:nowrap]"
-            >
-              Ксюша
-            </div>
-            <div
-              data-pencil-name="p"
-              class="text-[14px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal italic text-left [white-space:nowrap]"
-            >
-              +375 33 357 3196
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        data-pencil-name="Carpet Divider 2"
-        class="box-border w-full h-[20px] shrink-0 bg-[url('images/generated-1782730360715.png')] bg-cover bg-center"
-      ></div>
-      <div
-        data-pencil-name="Footer"
-        class="span-all box-border w-full h-fit shrink-0 flex flex-col gap-0 p-[10px_30px_26px_30px] justify-start items-center bg-[#EBE3D2]"
-      >
-        <div
-          data-pencil-name="Foot"
-          class="text-[12px]/[normal] box-border text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal tracking-[1px] text-left [white-space:nowrap]"
-        >
-          сделано с любовью · 14 августа 2026
-        </div>
-      </div>
-
-      <!-- декоративные коллажи, торчащие по бокам (только на широких экранах) -->
-      <div class="accent accent-1" aria-hidden="true"></div>
-      <div class="accent accent-2" aria-hidden="true"></div>
-      <div class="accent accent-3" aria-hidden="true"></div>
     </div>
 
-    <script>
-      // ===== Настройки =====
-      var WEDDING = new Date("2026-08-14T14:00:00");      // дата и время свадьбы
-      // Ответы гостей сохраняются в Google-таблицу.
-      // Вставь сюда URL веб-приложения Google Apps Script (заканчивается на /exec).
-      // Как получить — см. файл RSVP-SETUP.md рядом с сайтом.
-      var RSVP_ENDPOINT = "";
+    <!-- декоративные коллажи, торчащие по бокам (только на широких экранах) -->
+    <div class="accent accent-1" aria-hidden="true"></div>
+    <div class="accent accent-2" aria-hidden="true"></div>
+    <div class="accent accent-3" aria-hidden="true"></div>
+  </div>
 
-      // ===== Живой обратный отсчёт =====
-      function pad(n) { return String(n).padStart(2, "0"); }
-      function tick() {
-        var diff = WEDDING - new Date();
-        var set = function (id, v) { var el = document.getElementById(id); if (el) el.textContent = pad(v); };
-        if (diff <= 0) { set("cd-days", 0); set("cd-hours", 0); set("cd-min", 0); set("cd-sec", 0); return; }
-        var s = Math.floor(diff / 1000);
-        set("cd-days", Math.floor(s / 86400));
-        set("cd-hours", Math.floor((s % 86400) / 3600));
-        set("cd-min", Math.floor((s % 3600) / 60));
-        set("cd-sec", s % 60);
-      }
-      tick();
-      setInterval(tick, 1000);
+  <script>
+    // ===== Настройки =====
+    var WEDDING = new Date("2026-08-14T14:00:00");      // дата и время свадьбы
+    // Ответы гостей сохраняются в Google-таблицу.
+    // Вставь сюда URL веб-приложения Google Apps Script (заканчивается на /exec).
+    // Как получить — см. файл RSVP-SETUP.md рядом с сайтом.
+    var RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbwt1VdJxjXAA8mXbBJIgiv_P3G2fVvJsWPhJ1717izc9ZEVbpJzS4wARD8hyvyUvczc/exec";
 
-      // ===== Кнопка «Добавить в календарь» (.ics) =====
-      var calBtn = document.getElementById("cal-btn");
-      if (calBtn) {
-        calBtn.addEventListener("click", function () {
-          var fmt = function (d) { return d.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"; };
-          var start = new Date("2026-08-14T11:00:00Z"); // 14:00 по Москве
-          var end = new Date("2026-08-14T20:00:00Z");
-          var ics = [
-            "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//wedding//ru",
-            "BEGIN:VEVENT",
-            "UID:wedding-14-08-2026@invite",
-            "DTSTAMP:" + fmt(new Date()),
-            "DTSTART:" + fmt(start),
-            "DTEND:" + fmt(end),
-            "SUMMARY:Свадьба — тусовка года!",
-            "DESCRIPTION:Это не просто свадьба — это тусовка года! И ты в списке гостей.",
-            "LOCATION:Васина деревня, Лунинецкий район",
-            "END:VEVENT", "END:VCALENDAR"
-          ].join("\r\n");
-          var blob = new Blob([ics], { type: "text/calendar" });
-          var url = URL.createObjectURL(blob);
-          var a = document.createElement("a");
-          a.href = url; a.download = "svadba-14-08-2026.ics"; a.click();
-          URL.revokeObjectURL(url);
-        });
-      }
+    // ===== Живой обратный отсчёт =====
+    function pad(n) { return String(n).padStart(2, "0"); }
+    function tick() {
+      var diff = WEDDING - new Date();
+      var set = function (id, v) { var el = document.getElementById(id); if (el) el.textContent = pad(v); };
+      if (diff <= 0) { set("cd-days", 0); set("cd-hours", 0); set("cd-min", 0); set("cd-sec", 0); return; }
+      var s = Math.floor(diff / 1000);
+      set("cd-days", Math.floor(s / 86400));
+      set("cd-hours", Math.floor((s % 86400) / 3600));
+      set("cd-min", Math.floor((s % 3600) / 60));
+      set("cd-sec", s % 60);
+    }
+    tick();
+    setInterval(tick, 1000);
 
-      // ===== Кнопка «Google Calendar» =====
-      var gcalBtn = document.getElementById("gcal-btn");
-      if (gcalBtn) {
-        var p = new URLSearchParams({
-          action: "TEMPLATE",
-          text: "Свадьба — тусовка года!",
-          dates: "20260814T110000Z/20260814T200000Z",
-          details: "Это не просто свадьба — это тусовка года! И ты в списке гостей.",
-          location: "Васина деревня, Лунинецкий район"
-        });
-        gcalBtn.href = "https://calendar.google.com/calendar/render?" + p.toString();
-      }
+    // ===== Кнопка «Добавить в календарь» (.ics) =====
+    var calBtn = document.getElementById("cal-btn");
+    if (calBtn) {
+      calBtn.addEventListener("click", function () {
+        var fmt = function (d) { return d.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"; };
+        var start = new Date("2026-08-14T11:00:00Z"); // 14:00 по Москве
+        var end = new Date("2026-08-14T20:00:00Z");
+        var ics = [
+          "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//wedding//ru",
+          "BEGIN:VEVENT",
+          "UID:wedding-14-08-2026@invite",
+          "DTSTAMP:" + fmt(new Date()),
+          "DTSTART:" + fmt(start),
+          "DTEND:" + fmt(end),
+          "SUMMARY:Свадьба — тусовка года!",
+          "DESCRIPTION:Это не просто свадьба — это тусовка года! И ты в списке гостей.",
+          "LOCATION:Васина деревня, Лунинецкий район",
+          "END:VEVENT", "END:VCALENDAR"
+        ].join("\r\n");
+        var blob = new Blob([ics], { type: "text/calendar" });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url; a.download = "svadba-14-08-2026.ics"; a.click();
+        URL.revokeObjectURL(url);
+      });
+    }
 
-      // ===== Форма подтверждения (RSVP) =====
-      var rsvpForm = document.getElementById("rsvp-form");
-      if (rsvpForm) {
-        var rsvpExtra = document.getElementById("rsvp-extra");
+    // ===== Кнопка «Google Calendar» =====
+    var gcalBtn = document.getElementById("gcal-btn");
+    if (gcalBtn) {
+      var p = new URLSearchParams({
+        action: "TEMPLATE",
+        text: "Свадьба — тусовка года!",
+        dates: "20260814T110000Z/20260814T200000Z",
+        details: "Это не просто свадьба — это тусовка года! И ты в списке гостей.",
+        location: "Васина деревня, Лунинецкий район"
+      });
+      gcalBtn.href = "https://calendar.google.com/calendar/render?" + p.toString();
+    }
 
-        // Доп. вопросы показываем только когда выбрано «Буду»
-        rsvpForm.addEventListener("change", function (e) {
-          if (e.target && e.target.name === "attend" && rsvpExtra) {
-            rsvpExtra.hidden = e.target.value !== "Буду";
-          }
-        });
+    // ===== Форма подтверждения (RSVP) =====
+    var rsvpForm = document.getElementById("rsvp-form");
+    if (rsvpForm) {
+      var rsvpExtra = document.getElementById("rsvp-extra");
 
-        rsvpForm.addEventListener("submit", function (e) {
-          e.preventDefault();
-          var f = rsvpForm;
-          var name = (f.name.value || "").trim();
-          if (!name) { f.name.focus(); return; }
-          if (!f.attend.value) {
-            var firstAttend = f.querySelector('input[name="attend"]');
-            if (firstAttend) firstAttend.focus();
-            alert("Отметь, пожалуйста: «Буду» или «Не смогу» 🙂");
-            return;
-          }
+      // Доп. вопросы показываем только когда выбрано «Буду»
+      rsvpForm.addEventListener("change", function (e) {
+        if (e.target && e.target.name === "attend" && rsvpExtra) {
+          rsvpExtra.hidden = e.target.value !== "Буду";
+        }
+      });
 
-          var attend = f.attend.value;
-          var going = attend === "Буду";
-          var drinks = going
-            ? Array.prototype.slice
-                .call(f.querySelectorAll('input[name="drinks"]:checked'))
-                .map(function (c) { return c.value; })
-            : [];
-          var stay = going && f.stay ? (f.stay.value || "") : "";
-          var msg = (f.msg.value || "").trim();
+      rsvpForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var f = rsvpForm;
+        var name = (f.name.value || "").trim();
+        if (!name) { f.name.focus(); return; }
+        if (!f.attend.value) {
+          var firstAttend = f.querySelector('input[name="attend"]');
+          if (firstAttend) firstAttend.focus();
+          alert("Отметь, пожалуйста: «Буду» или «Не смогу» 🙂");
+          return;
+        }
 
-          var payload = {
-            name: name,
-            attend: attend,
-            drinks: drinks,
-            stay: stay,
-            msg: msg,
-            page: location.href
-          };
+        var attend = f.attend.value;
+        var going = attend === "Буду";
+        var drinks = going
+          ? Array.prototype.slice
+            .call(f.querySelectorAll('input[name="drinks"]:checked'))
+            .map(function (c) { return c.value; })
+          : [];
+        var stay = going && f.stay ? (f.stay.value || "") : "";
+        var msg = (f.msg.value || "").trim();
 
-          // Отправляем в Google-таблицу (если задан адрес)
-          if (RSVP_ENDPOINT) {
-            fetch(RSVP_ENDPOINT, {
-              method: "POST",
-              mode: "no-cors",
-              headers: { "Content-Type": "text/plain;charset=utf-8" },
-              body: JSON.stringify(payload)
-            }).catch(function () {});
-          }
+        var payload = {
+          name: name,
+          attend: attend,
+          drinks: drinks,
+          stay: stay,
+          msg: msg,
+          page: location.href
+        };
 
-          // Показываем благодарность вместо формы
-          f.style.display = "none";
-          var thanks = document.getElementById("rsvp-thanks");
-          if (thanks) {
-            thanks.style.display = "block";
-            thanks.innerHTML = going
-              ? "Ура! Спасибо, " + name + " 🎉<br>Мы записали тебя — обязательно ждём на празднике!"
-              : "Спасибо, что дал(а) знать, " + name + ". Будем скучать 💚";
-          }
-        });
-      }
-    </script>
-  </body>
+        // Отправляем в Google-таблицу (если задан адрес)
+        if (RSVP_ENDPOINT) {
+          fetch(RSVP_ENDPOINT, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payload)
+          }).catch(function () { });
+        }
+
+        // Показываем благодарность вместо формы
+        f.style.display = "none";
+        var thanks = document.getElementById("rsvp-thanks");
+        if (thanks) {
+          thanks.style.display = "block";
+          thanks.innerHTML = going
+            ? "Ура! Спасибо, " + name + " 🎉<br>Мы записали тебя — обязательно ждём на празднике!"
+            : "Спасибо, что дал(а) знать, " + name + ". Будем скучать 💚";
+        }
+      });
+    }
+  </script>
+</body>
+
 </html>
