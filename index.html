@@ -185,11 +185,14 @@
 
     .rsvp-submit {
       cursor: pointer;
+      align-self: center;
+      width: 306px;
+      max-width: 100%;
       font-family: "Playfair Display", serif;
       font-size: 17px;
       letter-spacing: 0.3px;
       color: #2c3e33;
-      background: #efe8d7;
+      background: linear-gradient(rgba(170, 191, 157, 0.5), rgba(170, 191, 157, 0.5)), #efe8d7;
       border: none;
       border-radius: 30px;
       padding: 13px 28px;
@@ -1020,7 +1023,7 @@
             </div>
           </div>
           <textarea name="msg" rows="2" placeholder="Пожелания, вопросы, идея для конкурса :)"></textarea>
-          <button type="submit" class="rsvp-submit">Подтвердить присутствие</button>
+          <button type="submit" class="rsvp-submit">Отправить</button>
         </form>
         <div id="rsvp-thanks" class="rsvp-thanks" style="display: none"></div>
         <div class="rsvp-cal-row">
