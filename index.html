@@ -185,9 +185,8 @@
 
     .rsvp-submit {
       cursor: pointer;
-      align-self: center;
-      width: 306px;
-      max-width: 100%;
+      align-self: stretch;
+      width: 100%;
       font-family: "Playfair Display", serif;
       font-size: 17px;
       letter-spacing: 0.3px;
@@ -244,6 +243,19 @@
       display: none;
     }
 
+    /* carpet polaroids + equation: keep the cluster centered at any screen width */
+    #page [data-pencil-name="Polaroid Жених"] {
+      left: calc(50% - 175px) !important;
+    }
+
+    #page [data-pencil-name="Polaroid Невеста"] {
+      left: calc(50% - 25px) !important;
+    }
+
+    #page [data-pencil-name="Equation"] {
+      left: calc(50% - 193px) !important;
+    }
+
     /* safety: never let the big hero names overflow on small phones */
     @media (max-width: 430px) {
       [data-pencil-name="Names"] {
@@ -294,19 +306,6 @@
         height: 600px !important;
       }
 
-      /* CARPET polaroids — full-width carpet band, cluster centered */
-      #page [data-pencil-name="Polaroid Жених"] {
-        left: calc(50% - 175px) !important;
-      }
-
-      #page [data-pencil-name="Polaroid Невеста"] {
-        left: calc(50% - 25px) !important;
-      }
-
-      #page [data-pencil-name="Equation"] {
-        left: calc(50% - 193px) !important;
-      }
-
       /* dark carpet overlay must span the full band, not be capped to 720 */
       #page [data-pencil-name="Equation BG"] {
         max-width: none !important;
@@ -332,11 +331,7 @@
         margin-right: auto;
       }
 
-      /* desktop: wider Submit, sized Google Calendar (per desktop artboard) */
-      [data-pencil-name="RSVP Card"] .rsvp-submit {
-        width: 460px;
-      }
-
+      /* desktop: sized Google Calendar (per desktop artboard) */
       [data-pencil-name="RSVP Card"] .cal-btn-ghost {
         width: 180px;
         justify-content: center;
@@ -1063,7 +1058,7 @@
       </div>
       <div data-pencil-name="Cont Intro"
         class="text-[14px]/[20px] box-border w-full text-[#726E5E] font-['PT_Serif',system-ui,sans-serif] font-normal text-center">
-        Если у вас остались вопросы — звоните, мы всегда на связи.
+        Если у вас остались вопросы — мы всегда на связи.
       </div>
       <div data-pencil-name="Cont Row"
         class="box-border w-full h-fit shrink-0 flex flex-row gap-0 p-[6px_0px_0px_0px] justify-center items-center">
