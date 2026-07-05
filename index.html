@@ -332,6 +332,18 @@
         margin-right: auto;
       }
 
+      /* desktop: wider Submit, sized Google Calendar (per desktop artboard) */
+      [data-pencil-name="RSVP Card"] .rsvp-submit {
+        width: 460px;
+      }
+
+      [data-pencil-name="RSVP Card"] .cal-btn-ghost {
+        width: 180px;
+        justify-content: center;
+        padding: 11px 18px;
+        white-space: nowrap;
+      }
+
       /* FILM STRIP — full-width band */
       #page>div[data-pencil-name="Film Strip Section"] {
         padding-left: 0;
@@ -1022,7 +1034,7 @@
               </div>
             </div>
           </div>
-          <textarea name="msg" rows="2" placeholder="Пожелания, вопросы, идея для конкурса :)"></textarea>
+          <textarea name="msg" rows="2" placeholder="Здесь можно что-нибудь написать:)"></textarea>
           <button type="submit" class="rsvp-submit">Отправить</button>
         </form>
         <div id="rsvp-thanks" class="rsvp-thanks" style="display: none"></div>
